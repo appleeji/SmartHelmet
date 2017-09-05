@@ -2,23 +2,40 @@
 import tensorflow as tf
 import numpy as np
 import math
+import re
+
 tf.set_random_seed(777)  # for reproducibility
 learning_rate = 0.1
 
-infile = open("data.txt","r")
+#dataAccident
+#dataNoAccident
+
+infile = open("dataNoAccident.txt","r")
 s = infile.read()
-numbers = [eval(x) for x in s.split()]
-leng = len(numbers)/9
+numbers = re.split("['\n' ]",s)
+
+infile2 = open("dataAccident.txt","r")
+s2 = infile2.read()
+numbers2 = re.split("['\n' ]",s2)
+
+leng = len(numbers)/6
+leng2 = len(numbers2) /6
 #leng = 2
-x_data = [[0 for col in range(6)] for row in range(leng+17)]
+x_data = [[0 for col in range(6)] for row in range(leng+leng2)]
 size = 0
-for i in range(leng*9):
+for i in range((leng)*6):
 #for i in range(2):
-        if i%9<6:
-     	   x_data[size][i%6]=float(numbers[i])
-        if i % 9 == 8 :
+        
+     	x_data[size][i%6]=float(numbers[i])
+        if i % 6 == 5 :
                 size=size+1
-y_data = [[1 for col in range(1)] for row in range(leng+17)]
+for i in range(leng2*6):
+	x_data[size][i%6]=float(numbers2[i])
+	if i % 6 == 5 :
+		size=size+1
+y_data = [[1 for col in range(1)] for row in range(leng)]
+y_data2 = [[0 for col in range(1)] for row in range(leng2)]
+y_data = y_data + y_data2
 '''
 x_data_mean = []
 temp = 0
@@ -38,135 +55,175 @@ x_data_stddev= []
 for i in range(9):
         x_data_stddev.append(math.sqrt(x_data_double[i] - x_data_mean[i]*x_data_mean[i]))
 '''
-
+'''
 x_data[leng][0] = 50001
 x_data[leng][1] = 50002
 x_data[leng][2] = 50003
 x_data[leng][3] = 50001
 x_data[leng][4] = 80000
 x_data[leng][5] = 40000
-'''
+
 x_data[leng][6] = 1 
 x_data[leng][7] = 1 
 x_data[leng][8] = 1 
+
+x_data[leng+1][0] = 1000
+x_data[leng+1][1] = -2000
+x_data[leng+1][2] = -1000
+x_data[leng+1][3] = 2000
+x_data[leng+1][4] = 20000
+x_data[leng+1][5] = 1000
+
+x_data[leng+2][0] = 1002
+x_data[leng+2][1] = 20002
+x_data[leng+2][2] = 1001
+x_data[leng+2][3] = 2002
+x_data[leng+2][4] = 2000
+x_data[leng+2][5] = 1000
+
+x_data[leng+3][0] = 10000
+x_data[leng+3][1] = 2000
+x_data[leng+3][2] = 1000
+x_data[leng+3][3] = 1000
+x_data[leng+3][4] = 2000
+x_data[leng+3][5] = 2009
+
+x_data[leng+4][0] = 1000
+x_data[leng+4][1] = 1002
+x_data[leng+4][2] = 2003
+x_data[leng+4][3] = 1001
+x_data[leng+4][4] = 20000
+x_data[leng+4][5] = 1000
+
+x_data[leng+5][0] = 1000
+x_data[leng+5][1] = 2000
+x_data[leng+5][2] = 1000
+x_data[leng+5][3] = 3000
+x_data[leng+5][4] = 2000
+x_data[leng+5][5] = 10000
+
+x_data[leng+6][0] = 1002
+x_data[leng+6][1] = -20002
+x_data[leng+6][2] = 1501
+x_data[leng+6][3] = 1002
+x_data[leng+6][4] = 2300
+x_data[leng+6][5] = 1300
+
+x_data[leng+7][0] = 1400
+x_data[leng+7][1] = -25000
+x_data[leng+7][2] = 1600
+x_data[leng+7][3] = 1200
+x_data[leng+7][4] = 1500
+x_data[leng+7][5] = 1609
+
+x_data[leng+8][0] = 15000
+x_data[leng+8][1] = 14000
+x_data[leng+8][2] = 1700
+x_data[leng+8][3] = 1800
+x_data[leng+8][4] = 1200
+x_data[leng+8][5] = 1600
+
+x_data[leng+9][0] = 1702
+x_data[leng+9][1] = -1802
+x_data[leng+9][2] = -17001
+x_data[leng+9][3] = 20002
+x_data[leng+9][4] = 25000
+x_data[leng+9][5] = 1900
+
+x_data[leng+10][0] = -2500
+x_data[leng+10][1] = -2500
+x_data[leng+10][2] = 25000
+x_data[leng+10][3] = 2000
+x_data[leng+10][4] = 3500
+x_data[leng+10][5] = 1009
+
+x_data[leng+11][0] = 2300
+x_data[leng+11][1] = -23000
+x_data[leng+11][2] = 2200
+x_data[leng+11][3] = 2500
+x_data[leng+11][4] = 1500
+x_data[leng+11][5] = 1800
+
+x_data[leng+12][0] = 1502
+x_data[leng+12][1] = -15002
+x_data[leng+12][2] = 1501
+x_data[leng+12][3] = -2502
+x_data[leng+12][4] = 3500
+x_data[leng+12][5] = 1800
+
+x_data[leng+13][0] = 16000
+x_data[leng+13][1] = -16000
+x_data[leng+13][2] = 16000
+x_data[leng+13][3] = 16000
+x_data[leng+13][4] = -26000
+x_data[leng+13][5] = 18009
+
+x_data[leng+14][0] = 17000
+x_data[leng+14][1] = -18000
+x_data[leng+14][2] = 17000
+x_data[leng+14][3] = 18000
+x_data[leng+14][4] = 25000
+x_data[leng+14][5] = -14000
+
+x_data[leng+15][0] = 18002
+x_data[leng+15][1] = -19002
+x_data[leng+15][2] = 16001
+x_data[leng+15][3] = -15002
+x_data[leng+15][4] = 23000
+x_data[leng+15][5] = 14000
+
+x_data[leng+16][0] = 16000
+x_data[leng+16][1] = -16000
+x_data[leng+16][2] = 16000
+x_data[leng+16][3] = 16000
+x_data[leng+16][4] = -37000
+x_data[leng+16][5] = 19009
+
+
+x_data[leng+17][0] = -840
+x_data[leng+17][1] = 95
+x_data[leng+17][2] = 125
+x_data[leng+17][3] = 1504
+x_data[leng+17][4] = 5248
+x_data[leng+17][5] = 13900
+
+x_data[leng+18][0] = -840
+x_data[leng+18][1] = 95
+x_data[leng+18][2] = 125
+x_data[leng+18][3] = 1504
+x_data[leng+18][4] = 5248
+x_data[leng+18][5] = 13900
+
+x_data[leng+19][0] = -840
+x_data[leng+19][1] = 95
+x_data[leng+19][2] = 125
+x_data[leng+19][3] = 1504
+x_data[leng+19][4] = 5248
+x_data[leng+19][5] = 13900
+
+x_data[leng+20][0] = -840
+x_data[leng+20][1] = 95
+x_data[leng+20][2] = 125
+x_data[leng+20][3] = 1504
+x_data[leng+20][4] = 5248
+x_data[leng+20][5] = 13900
+
+x_data[leng+21][0] = -840
+x_data[leng+21][1] = 95
+x_data[leng+21][2] = 125
+x_data[leng+21][3] = 1504
+x_data[leng+21][4] = 5248
+x_data[leng+21][5] = 13900
+
+x_data[leng+22][0] = -840
+x_data[leng+22][1] = 95
+x_data[leng+22][2] = 125
+x_data[leng+22][3] = 1504
+x_data[leng+22][4] = 5248
+x_data[leng+22][5] = 13900
 '''
-x_data[leng+1][0] = 50000
-x_data[leng+1][1] = 50000
-x_data[leng+1][2] = 50000
-x_data[leng+1][3] = 50000
-x_data[leng+1][4] = 80000
-x_data[leng+1][5] = 40000
 
-x_data[leng+2][0] = 50002
-x_data[leng+2][1] = 50002
-x_data[leng+2][2] = 50001
-x_data[leng+2][3] = 50002
-x_data[leng+2][4] = 80000
-x_data[leng+2][5] = 40000
-
-x_data[leng+3][0] = 50000
-x_data[leng+3][1] = 50000
-x_data[leng+3][2] = 50000
-x_data[leng+3][3] = 50000
-x_data[leng+3][4] = 80000
-x_data[leng+3][5] = 40009
-
-x_data[leng+4][0] = 40000
-x_data[leng+4][1] = 40002
-x_data[leng+4][2] = 40003
-x_data[leng+4][3] = 40001
-x_data[leng+4][4] = 60000
-x_data[leng+4][5] = 30000
 '''
-x_data[leng][6] = 1 
-x_data[leng][7] = 1 
-x_data[leng][8] = 1 
-'''
-x_data[leng+5][0] = 40000
-x_data[leng+5][1] = 40000
-x_data[leng+5][2] = 40000
-x_data[leng+5][3] = 40000
-x_data[leng+5][4] = 60000
-x_data[leng+5][5] = 30000
-
-x_data[leng+6][0] = 40002
-x_data[leng+6][1] = 40002
-x_data[leng+6][2] = 40001
-x_data[leng+6][3] = 40002
-x_data[leng+6][4] = 60000
-x_data[leng+6][5] = 30000
-
-x_data[leng+7][0] = 40000
-x_data[leng+7][1] = 40000
-x_data[leng+7][2] = 40000
-x_data[leng+7][3] = 40000
-x_data[leng+7][4] = 60000
-x_data[leng+7][5] = 30009
-
-x_data[leng+8][0] = 40000
-x_data[leng+8][1] = 40000
-x_data[leng+8][2] = 40000
-x_data[leng+8][3] = 40000
-x_data[leng+8][4] = 60000
-x_data[leng+8][5] = 30000
-
-x_data[leng+9][0] = 40002
-x_data[leng+9][1] = 40002
-x_data[leng+9][2] = 40001
-x_data[leng+9][3] = 40002
-x_data[leng+9][4] = 60000
-x_data[leng+9][5] = 30000
-
-x_data[leng+10][0] = 35000
-x_data[leng+10][1] = 35000
-x_data[leng+10][2] = 35000
-x_data[leng+10][3] = 35000
-x_data[leng+10][4] = 55000
-x_data[leng+10][5] = 28009
-
-x_data[leng+11][0] = 35000
-x_data[leng+11][1] = 35000
-x_data[leng+11][2] = 35000
-x_data[leng+11][3] = 35000
-x_data[leng+11][4] = 55000
-x_data[leng+11][5] = 28000
-
-x_data[leng+12][0] = 35002
-x_data[leng+12][1] = 35002
-x_data[leng+12][2] = 35001
-x_data[leng+12][3] = 35002
-x_data[leng+12][4] = 55000
-x_data[leng+12][5] = 28000
-
-x_data[leng+13][0] = 35000
-x_data[leng+13][1] = 35000
-x_data[leng+13][2] = 35000
-x_data[leng+13][3] = 35000
-x_data[leng+13][4] = 55000
-x_data[leng+13][5] = 28009
-
-x_data[leng+14][0] = 36000
-x_data[leng+14][1] = 36000
-x_data[leng+14][2] = 36000
-x_data[leng+14][3] = 36000
-x_data[leng+14][4] = 57000
-x_data[leng+14][5] = 29000
-
-x_data[leng+15][0] = 36002
-x_data[leng+15][1] = 36002
-x_data[leng+15][2] = 36001
-x_data[leng+15][3] = 36002
-x_data[leng+15][4] = 57000
-x_data[leng+15][5] = 29000
-
-x_data[leng+16][0] = 36000
-x_data[leng+16][1] = 36000
-x_data[leng+16][2] = 36000
-x_data[leng+16][3] = 36000
-x_data[leng+16][4] = 57000
-x_data[leng+16][5] = 29009
-
-
 y_data[leng][0] = 0
 y_data[leng+1][0] = 0
 y_data[leng+2][0] = 0
@@ -184,6 +241,16 @@ y_data[leng+13][0] = 0
 y_data[leng+14][0] = 0
 y_data[leng+15][0] = 0
 y_data[leng+16][0] = 0
+'''
+'''
+y_data[leng+17][0] = 0
+y_data[leng+18][0] = 0
+y_data[leng+19][0] = 0
+y_data[leng+20][0] = 0
+y_data[leng+21][0] = 0
+y_data[leng+22][0] = 0
+'''
+
 x_data2 = [[0.7,0.7,0.7,0.7,0.7,0.9],[1,1,1,1,1,1]]
 y_data2 = [[0],[0]]
 
@@ -198,12 +265,7 @@ x_data_leng = abs(x_data_max-x_data_min)
 x_data = (x_data - x_data_min)/x_data_leng
 print(x_data_min)
 print(x_data_leng)
-'''
-x_data_min = x_data.min(axis=0)
-x_data_max = x_data.max(axis=0)
-x_data_leng = abs(x_data_max-x_data_min)
-x_data = (x_data - x_data_min)/x_data_leng
-'''
+
 print (x_data)
 print (y_data)
 
