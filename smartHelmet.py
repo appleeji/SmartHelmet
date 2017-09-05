@@ -262,10 +262,10 @@ try:
 		with tf.Session() as sess:
 		    # Initialize TensorFlow variables
 		    if T!=1:
-		    	sess.run(tf.global_variables_initializer())
+		   	 sess.run(tf.global_variables_initializer())
 		    print "222222"
-                   # if T!=1:			    
-		    saver.restore(sess, 'left.ckpt')
+                    if T!=1:			    
+		    	saver.restore(sess, 'left.ckpt')
 		    print "3333333"
 		    # Accuracy report
 		    print("eeeeeeeeeeeeeee")
