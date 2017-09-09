@@ -142,7 +142,7 @@ bus.write_byte_data(address, power_mgmt_1, 0)
 learning_rate = 0.1
 X = tf.placeholder(tf.float32)
 Y = tf.placeholder(tf.float32)
-W1 = tf.Variable(tf.random_normal([6, 4]), name='weight1')
+W1 = tf.Variable(tf.random_normal([7, 4]), name='weight1')
 b1 = tf.Variable(tf.random_normal([4]), name='bias1')
 layer1 = tf.nn.relu(tf.matmul(X,W1)+b1)
 
@@ -197,7 +197,7 @@ try:
 	with tf.Session() as sess:
 		sess.run(tf.global_variables_initializer())
 		print "222222"
-	    	saver.restore(sess, 'left.ckpt')
+	    	saver.restore(sess, 'gtest.ckpt')
 		
 		while True:
 			#step1 sleep
@@ -246,7 +246,7 @@ try:
 				continue
 	
 			#step3 check if value is validate
-			x_data2 = [[0.7,0.7,0.7,0.7,0.7,0.9]]
+			x_data2 = [[0.7,0.7,0.7,0.7,0.7,0.9,0.5]]
 			y_data2 = [[0]]
 
 			x_data2[0][0] = (gyro_xout +32768) / 82770.
