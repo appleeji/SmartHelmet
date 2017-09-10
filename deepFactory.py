@@ -10,11 +10,9 @@ learning_rate = 0.1
 #dataAccident
 #dataNoAccident
 
-<<<<<<< HEAD
+
 infile = open("frontBack.txt","r")
-=======
-infile = open("leftright.txt","r")
->>>>>>> 88f1d0bbc710d1f17db5fd0c1f5a3b31ff077429
+
 s = infile.read()
 numbers = re.split("['\n' ]",s)
 
@@ -29,6 +27,8 @@ leng4 = len(numbers2) /6/4/(10/3)
 #leng = 2
 x_data = [[0 for col in range(6)] for row in range(leng+leng2)]
 x_data2 = [[0 for col in range(6)] for row in range(leng3+leng4)]
+x_data3 = [[0 for col in range(6)] for row in range(leng2+leng4)]
+x_data4 = [[0 for col in range(6)] for row in range(leng+leng3)]
 size = 0
 for i in range((leng)*6):
         x_data[size][i%6]=float(numbers[i])
@@ -48,13 +48,25 @@ for i in range((leng2*6),(leng2*6+leng4)):
         x_data2[size][i%6]=float(numbers2[i])
         if i % 6 == 5 :
                 size=size+1
+size = 0
+for i in range(0,(leng2*6+leng4)):
+        x_data3[size][i%6]=float(numbers2[i])
+        if i % 6 == 5 :
+                size=size+1
+size = 0
+for i in range(len(numbers)-1):
+        x_data4[size][i%6]=float(numbers[i])
+        if i % 6 == 5 :
+                size=size+1
 y_data = [[1 for col in range(1)] for row in range(leng)]
 y_data2 = [[0 for col in range(1)] for row in range(leng2)]
 y_data = y_data + y_data2
 t_data = [[1 for col in range(1)] for row in range(leng3)]
 t_data2 =  [[0 for col in range(1)] for row in range(leng4)]
 t_data = t_data + t_data2
-print(len(x_data),"  ",len(y_data))
+t2_data = [[0 for col in range(1)] for row in range(leng2+leng4)]
+t3_data = [[1 for col in range(1)] for row in range(leng+leng3)]
+print(len(x_data4),"  ",len(t3_data))
 '''
 x_data_mean = []
 temp = 0
@@ -83,6 +95,10 @@ y_data = np.array(y_data, dtype=np.float32)
 x_data2 = np.array(x_data2, dtype=np.float32)
 y_data2 = np.array(y_data2, dtype=np.float32)
 t_data = np.array(t_data, dtype=np.float32)
+x_data3 = np.array(x_data3, dtype=np.float32)
+t2_data = np.array(t2_data, dtype = np.float32)
+x_data4 = np.array(x_data4, dtype=np.float32)
+t3_data = np.array(t3_data, dtype = np.float32)
 
 x_data_min = x_data.min(axis=0)
 x_data_max = x_data.max(axis=0)
@@ -93,6 +109,16 @@ x_data_min2 = x_data2.min(axis=0)
 x_data_max2 = x_data2.max(axis=0)
 x_data_leng2 = abs(x_data_max2-x_data_min2)
 x_data2 = (x_data2 - x_data_min2)/x_data_leng2
+
+x_data_min3 = x_data3.min(axis=0)
+x_data_max3 = x_data3.max(axis=0)
+x_data_leng3 = abs(x_data_max3-x_data_min3)
+x_data3 = (x_data3 - x_data_min3)/x_data_leng3
+
+x_data_min4 = x_data4.min(axis=0)
+x_data_max4 = x_data4.max(axis=0)
+x_data_leng4 = abs(x_data_max4-x_data_min4)
+x_data4 = (x_data4 - x_data_min4)/x_data_leng4
 print(x_data_min)
 print(x_data_leng)
 
@@ -143,17 +169,13 @@ with tf.Session() as sess:
     # Initialize TensorFlow variables
     sess.run(tf.global_variables_initializer())
     
-    for step in range(10001):
-       sess.run(train, feed_dict={X: x_data, Y: y_data})
-<<<<<<< HEAD
-    saver.save(sess, 'frontBack.ckpt')
-=======
-    saver.save(sess, 'leftRight.ckpt')
->>>>>>> 88f1d0bbc710d1f17db5fd0c1f5a3b31ff077429
-   # saver.restore(sess, 'rtttttttt.ckpt')
+    #for step in range(10001):
+    #   sess.run(train, feed_dict={X: x_data, Y: y_data})
+    #saver.save(sess, 'frontBack.ckpt')
+    saver.restore(sess, 'frontBack.ckpt')
     # Accuracy report
     h, c, a = sess.run([hypothesis, predicted, accuracy],
-                       feed_dict={X: x_data2, Y: t_data})
+                       feed_dict={X: x_data4, Y: t3_data})
     print(c[0][0])
     if c[1][0]==0.0:
 	print("test !!!")

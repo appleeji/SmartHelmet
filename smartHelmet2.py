@@ -142,20 +142,20 @@ bus.write_byte_data(address, power_mgmt_1, 0)
 learning_rate = 0.1
 X = tf.placeholder(tf.float32)
 Y = tf.placeholder(tf.float32)
-W1 = tf.Variable(tf.random_normal([7, 4]), name='weight1')
-b1 = tf.Variable(tf.random_normal([4]), name='bias1')
+W1 = tf.Variable(tf.random_normal([6, 8]), name='weight1')
+b1 = tf.Variable(tf.random_normal([8]), name='bias1')
 layer1 = tf.nn.relu(tf.matmul(X,W1)+b1)
 
-W2 = tf.Variable(tf.random_normal([4, 3]), name='weight1')
-b2 = tf.Variable(tf.random_normal([3]), name='bias1')
+W2 = tf.Variable(tf.random_normal([8, 6]), name='weight2')
+b2 = tf.Variable(tf.random_normal([6]), name='bias2')
 layer2 = tf.nn.relu(tf.matmul(layer1,W2)+b2)
 
-W3 = tf.Variable(tf.random_normal([3, 2]), name='weight1')
-b3 = tf.Variable(tf.random_normal([2]), name='bias1')
+W3 = tf.Variable(tf.random_normal([6, 4]), name='weight3')
+b3 = tf.Variable(tf.random_normal([4]), name='bias3')
 layer3 = tf.nn.relu(tf.matmul(layer2,W3)+b3)
 
-W4 = tf.Variable(tf.random_normal([2, 1]), name='weight2')
-b4 = tf.Variable(tf.random_normal([1]), name='bias2')
+W4 = tf.Variable(tf.random_normal([4, 1]), name='weight4')
+b4 = tf.Variable(tf.random_normal([1]), name='bias4')
 		
 #W4 = tf.Variable(tf.random_normal([6, 1]), name='weight2')
 #b4 = tf.Variable(tf.random_normal([1]), name='bias2')
@@ -197,7 +197,7 @@ try:
 	with tf.Session() as sess:
 		sess.run(tf.global_variables_initializer())
 		print "222222"
-	    	saver.restore(sess, 'gtest.ckpt')
+	    	saver.restore(sess, 'noMove.ckpt')
 		
 		while True:
 			#step1 sleep
@@ -246,7 +246,7 @@ try:
 				continue
 	
 			#step3 check if value is validate
-			x_data2 = [[0.7,0.7,0.7,0.7,0.7,0.9,0.5]]
+			x_data2 = [[0.7,0.7,0.7,0.7,0.7,0.9]]
 			y_data2 = [[0]]
 
 			x_data2[0][0] = (gyro_xout +32768) / 82770.
