@@ -20,16 +20,22 @@ infile2 = open("newAccident.txt","r")
 s2 = infile2.read()
 numbers2 = re.split("['\n' ]",s2)
 
-leng = len(numbers)/6/(10/7)
-leng2 = len(numbers2) /6/13/(10/7)
-leng3 = len(numbers)/6/(10/3)
-leng4 = len(numbers2) /6/13/(10/3)
+leng = len(numbers)/6
+leng = int(leng*0.7)
+leng2 = len(numbers2)/6
+leng2 = int(leng2*0.7)
+leng3 = len(numbers)/6
+leng3 = int(leng3*0.3)
+leng4 = len(numbers2)/6
+leng4 = int(leng4*0.3)
 #leng = 2
 x_data = [[0 for col in range(6)] for row in range(leng+leng2)]
 x_data2 = [[0 for col in range(6)] for row in range(leng3+leng4)]
 x_data3 = [[0 for col in range(6)] for row in range(leng2+leng4)]
 x_data4 = [[0 for col in range(6)] for row in range(leng+leng3)]
 size = 0
+print(len(numbers)," " ,len(numbers2))
+print(leng," ",leng2," ",leng3," ",leng4)
 for i in range((leng)*6):
         x_data[size][i%6]=float(numbers[i])
         if i % 6 == 5 :
@@ -40,11 +46,11 @@ for i in range(leng2*6):
         if i % 6 == 5 :
                 size=size+1
 size=0
-for i in range((leng*6),len(numbers)-1):
+for i in range((leng*6),(leng*6+leng3*6)):
         x_data2[size][i%6]=float(numbers[i])
         if i % 6 == 5 :
                 size=size+1
-for i in range((leng2*6),(leng2*6+leng4)):
+for i in range((leng2*6),(leng2*6+leng4*6)):
         x_data2[size][i%6]=float(numbers2[i])
         if i % 6 == 5 :
                 size=size+1
@@ -54,7 +60,7 @@ for i in range(0,(leng2*6+leng4)):
         if i % 6 == 5 :
                 size=size+1
 size = 0
-for i in range(len(numbers)-1):
+for i in range(leng+leng3):
         x_data4[size][i%6]=float(numbers[i])
         if i % 6 == 5 :
                 size=size+1
