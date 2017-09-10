@@ -1,2 +1,2 @@
-model_checkpoint_path: "noMove.ckpt"
-all_model_checkpoint_paths: "noMove.ckpt"
+model_checkpoint_path: "frontBack25.ckpt"
+all_model_checkpoint_paths: "frontBack25.ckpt"
