@@ -11,7 +11,7 @@ learning_rate = 0.1
 #dataNoAccident
 
 
-infile = open("leftright.txt","r")
+infile = open("noMove.txt","r")
 
 s = infile.read()
 numbers = re.split("['\n' ]",s)
@@ -178,7 +178,7 @@ with tf.Session() as sess:
     
     for step in range(10001):
        sess.run(train, feed_dict={X: x_data, Y: y_data})
-    saver.save(sess, 'leftRright.ckpt')
+    saver.save(sess, 'noMove.ckpt')
   #  saver.restore(sess, 'test.ckpt')
     # Accuracy report
     h, c, a = sess.run([hypothesis, predicted, accuracy],

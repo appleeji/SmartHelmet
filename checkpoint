@@ -1,2 +1,2 @@
-model_checkpoint_path: "leftRright.ckpt"
-all_model_checkpoint_paths: "leftRright.ckpt"
+model_checkpoint_path: "noMove.ckpt"
+all_model_checkpoint_paths: "noMove.ckpt"
