@@ -21,9 +21,9 @@ s2 = infile2.read()
 numbers2 = re.split("['\n' ]",s2)
 
 leng = len(numbers)/6/(10/7)
-leng2 = len(numbers2) /6/4/(10/7)
+leng2 = len(numbers2) /6/13/(10/7)
 leng3 = len(numbers)/6/(10/3)
-leng4 = len(numbers2) /6/4/(10/3)
+leng4 = len(numbers2) /6/13/(10/3)
 #leng = 2
 x_data = [[0 for col in range(6)] for row in range(leng+leng2)]
 x_data2 = [[0 for col in range(6)] for row in range(leng3+leng4)]
