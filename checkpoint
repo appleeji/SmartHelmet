@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 model_checkpoint_path: "frontBack.ckpt"
 all_model_checkpoint_paths: "frontBack.ckpt"
+=======
+model_checkpoint_path: "leftRight.ckpt"
+all_model_checkpoint_paths: "leftRight.ckpt"
+>>>>>>> 88f1d0bbc710d1f17db5fd0c1f5a3b31ff077429
