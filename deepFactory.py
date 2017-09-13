@@ -11,7 +11,7 @@ learning_rate = 0.1
 #dataNoAccident
 
 
-infile = open("frontBack.txt","r")
+infile = open("noMove.txt","r")
 
 s = infile.read()
 numbers = re.split("['\n' ]",s)
@@ -25,14 +25,14 @@ leng = int(leng*0.7)
 
 leng2 = len(numbers2)/6
 leng2 = int(leng2*0.7)
-leng2 = int(leng2*0.25)
+leng2 = int(leng2)
 
 leng3 = len(numbers)/6
 leng3 = int(leng3*0.3)
 
 leng4 = len(numbers2)/6
 leng4 = int(leng4*0.3)
-leng4 = int(leng4*0.25)
+leng4 = int(leng4)
 #leng = 2
 x_data = [[0 for col in range(6)] for row in range(leng+leng2)]
 x_data2 = [[0 for col in range(6)] for row in range(leng3+leng4)]
@@ -181,10 +181,10 @@ with tf.Session() as sess:
     # Initialize TensorFlow variables
     sess.run(tf.global_variables_initializer())
     
-    for step in range(10001):
-       sess.run(train, feed_dict={X: x_data, Y: y_data})
-    saver.save(sess, 'frontBack25.ckpt')
-  #  saver.restore(sess, 'test.ckpt')
+    #for step in range(10001):
+       #sess.run(train, feed_dict={X: x_data, Y: y_data})
+    #saver.save(sess, 'frontBack25.ckpt')
+    saver.restore(sess, 'NoTest125.ckpt')
     # Accuracy report
     h, c, a = sess.run([hypothesis, predicted, accuracy],
                        feed_dict={X: x_data4, Y: t3_data})
