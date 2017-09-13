@@ -25,7 +25,6 @@ leng = int(leng*0.7)
 
 leng2 = len(numbers2)/6
 leng2 = int(leng2*0.7)
-s_leng2 = int(leng2)
 leng2 = int(leng2*0.125)
 
 leng3 = len(numbers)/6
@@ -56,7 +55,7 @@ for i in range((leng*6),(leng*6+leng3*6)):
         x_data2[size][i%6]=float(numbers[i])
         if i % 6 == 5 :
                 size=size+1
-for i in range((s_leng2*6),(s_leng2*6+leng4*6)):
+for i in range((leng2*6),(leng2*6+leng4*6)):
         x_data2[size][i%6]=float(numbers2[i])
         if i % 6 == 5 :
                 size=size+1
@@ -139,30 +138,30 @@ print (y_data)
 
 X = tf.placeholder(tf.float32)
 Y = tf.placeholder(tf.float32)
-W1 = tf.Variable(tf.random_normal([6, 4]), name='weight1')
-b1 = tf.Variable(tf.random_normal([4]), name='bias1')
+W1 = tf.Variable(tf.random_normal([6, 6]), name='weight1')
+b1 = tf.Variable(tf.random_normal([6]), name='bias1')
 layer1 = tf.nn.relu(tf.matmul(X,W1)+b1)
 
-W2 = tf.Variable(tf.random_normal([4, 2]), name='weight2')
-b2 = tf.Variable(tf.random_normal([2]), name='bias2')
+W2 = tf.Variable(tf.random_normal([6, 6]), name='weight2')
+b2 = tf.Variable(tf.random_normal([6]), name='bias2')
 layer2 = tf.nn.relu(tf.matmul(layer1,W2)+b2)
-'''
-W3 = tf.Variable(tf.random_normal([6, 4]), name='weight3')
-b3 = tf.Variable(tf.random_normal([4]), name='bias3')
+
+W3 = tf.Variable(tf.random_normal([6, 6]), name='weight3')
+b3 = tf.Variable(tf.random_normal([6]), name='bias3')
 layer3 = tf.nn.relu(tf.matmul(layer2,W3)+b3)
 
-W4 = tf.Variable(tf.random_normal([3, 2]), name='weight5')
-b4 = tf.Variable(tf.random_normal([2]), name='bias5')
+W4 = tf.Variable(tf.random_normal([6, 6]), name='weight5')
+b4 = tf.Variable(tf.random_normal([6]), name='bias5')
 layer4 = tf.nn.relu(tf.matmul(layer3,W4)+b4)
 
-'''
-W5 = tf.Variable(tf.random_normal([2, 1]), name='weight6')
+
+W5 = tf.Variable(tf.random_normal([6, 1]), name='weight6')
 b5 = tf.Variable(tf.random_normal([1]), name='bias6')
 '''
 # Hypothesis using sigmoid: tf.div(1., 1. + tf.exp(tf.matmul(X, W)))
 hypothesis = tf.sigmoid(tf.matmul(layer3, W4) + b4)
 '''
-hypothesis = tf.sigmoid(tf.matmul(layer2, W5) + b5)
+hypothesis = tf.sigmoid(tf.matmul(layer4, W5) + b5)
 
 
 # cost/loss function
@@ -182,10 +181,10 @@ with tf.Session() as sess:
     # Initialize TensorFlow variables
     sess.run(tf.global_variables_initializer())
     
-    #for step in range(10001):
-    #   sess.run(train, feed_dict={X: x_data, Y: y_data})
+    for step in range(10001):
+       sess.run(train, feed_dict={X: x_data, Y: y_data})
     #saver.save(sess, 'frontBack25.ckpt')
-    saver.restore(sess, 'NoTest125.ckpt')
+    #saver.restore(sess, 'NoTest125.ckpt')
     # Accuracy report
     h, c, a = sess.run([hypothesis, predicted, accuracy],
                        feed_dict={X: x_data2, Y: t_data})
