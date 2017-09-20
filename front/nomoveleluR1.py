@@ -48,14 +48,14 @@ for i in range((leng)*6):
         x_data[size][i%6]=float(numbers[i])
         if i % 6 == 5 :
                 if i>leng*(17/3) :
-                        x_data[size][6]=0.63
+                        x_data[size][6]=0.65
                 size=size+1
 newSize = size
 for i in range(leng2*6):
         x_data[size][i%6]=float(numbers2[i])
         if i % 6 == 5 :
                 if i>leng2*3 :
-                        x_data[size][6]=0.63
+                        x_data[size][6]=0.65
                 size=size+1
 size=0
 for i in range(39000,56999):
