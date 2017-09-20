@@ -38,7 +38,7 @@ leng4 = 3000
 
 #leng = 2
 x_data = [[0.5 for col in range(7)] for row in range(leng+leng2)]
-x_data2 = [[0.63 for col in range(7)] for row in range(leng3)]
+x_data2 = [[0.70 for col in range(7)] for row in range(leng3)]
 x_data3 = [[0.5 for col in range(7)] for row in range(leng2+leng4)]
 x_data4 = [[0.5 for col in range(7)] for row in range(leng+leng3)]
 size = 0
