@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 model_checkpoint_path: "noMovelelu1sig1S.ckpt"
 all_model_checkpoint_paths: "noMovelelu1sig1S.ckpt"
+=======
+model_checkpoint_path: "noMove125.ckpt"
+all_model_checkpoint_paths: "noMove125.ckpt"
+>>>>>>> f9ddaa3301e8db434b44a98d4bdce1ff6b4b9305

@@ -202,7 +202,7 @@ try:
 	with tf.Session() as sess:
 		sess.run(tf.global_variables_initializer())
 		print "222222"
-	    	saver.restore(sess, 'frontBack125.ckpt')
+	    	saver.restore(sess, 'NoTest125.ckpt')
 		
 		while True:
 			#step1 sleep

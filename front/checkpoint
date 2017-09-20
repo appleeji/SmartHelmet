@@ -1,2 +1,2 @@
-model_checkpoint_path: "frontBackrelu1sig1S.ckpt"
-all_model_checkpoint_paths: "frontBackrelu1sig1S.ckpt"
+model_checkpoint_path: "locationTest.ckpt"
+all_model_checkpoint_paths: "locationTest.ckpt"

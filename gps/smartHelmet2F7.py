@@ -14,6 +14,30 @@ import time
 #gps
 import serial
 import pynmea2
+#led
+import time
+
+from neopixel import *
+#------------------------------------------------ led -----------------------------------------#\
+# LED strip configuration:
+LED_COUNT      = 10      # Number of LED pixels.
+LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
+#LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
+LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
+LED_DMA        = 5       # DMA channel to use for generating signal (try 5)
+LED_BRIGHTNESS = 32     # Set to 0 for darkest and 255 for brightest
+LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
+LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
+LED_STRIP      = ws.WS2811_STRIP_GRB   # Strip type and colour ordering\
+
+# Define functions which animate LEDs in various ways.
+def colorWipe(strip, color, wait_ms=50):
+	"""Wipe color across display a pixel at a time."""
+	for i in range(strip.numPixels()):
+		strip.setPixelColor(i, color)
+		strip.show()
+		time.sleep(wait_ms/100000.0)
+	
 
 #------------------------------------------------ gps -----------------------------------------
 def parseGPS(mystr):
@@ -59,47 +83,6 @@ mqtts.on_connect = on_connect2
 mqtts.on_message = on_message2
 
 mqtts.connect("13.124.1.204")
-'''
-while True:
-	mqtts.loop_start()
-	#print(ID)
-	
-	if ID !=-1:
-		print("aaaaaaa")
-		break
-		#while exit
-
-	#mqtts.loop_forever()
-print("test12323333")
-'''
-#------------------------------- ultrasonic ---------------------------------------
-
-trig_pin = 13
-echo_pin = 19
-
-gpio.setmode(gpio.BCM)
-gpio.cleanup()
-
-gpio.setup(trig_pin, gpio.OUT)
-gpio.setup(echo_pin, gpio.IN)
-
-def getDistance():
-	gpio.output(trig_pin, False)
-	time.sleep(0.1)
-	gpio.output(trig_pin, True)
-	time.sleep(0.00001)
-	gpio.output(trig_pin, False)
-	
-	while gpio.input(echo_pin) ==0:
-		pulse_start = time.time()
-
-	while gpio.input(echo_pin) == 1:
-		pulse_end = time.time()
-
-	pulse_duration = pulse_end - pulse_start
-	distance = pulse_duration * 17000
-	distance = round(distance, 2)
-	return distance
 
 #-------------------------------- gyro&accel ----------------------------------------
 # Power management registers
@@ -142,7 +125,7 @@ bus.write_byte_data(address, power_mgmt_1, 0)
 learning_rate = 0.1
 X = tf.placeholder(tf.float32)
 Y = tf.placeholder(tf.float32)
-W1 = tf.Variable(tf.random_normal([6, 4]), name='weight1')
+W1 = tf.Variable(tf.random_normal([7, 4]), name='weight1')
 b1 = tf.Variable(tf.random_normal([4]), name='bias1')
 layer1 = tf.nn.relu(tf.matmul(X,W1)+b1)
 
@@ -180,6 +163,7 @@ accuracy = tf.reduce_mean(tf.cast(tf.equal(predicted, Y), dtype=tf.float32))
 
 
 count = 0
+time_count = 0
 
 gyro_xout_prev = 0.
 gyro_yout_prev = 0.
@@ -199,18 +183,24 @@ try:
 # Launch graph
 	saver = tf.train.Saver()
 	print "-------------"
+	strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
+	# Intialize the library (must be called once before other functions).
+	strip.begin()
+	print ('Color wipe animations.')
+
 	with tf.Session() as sess:
 		sess.run(tf.global_variables_initializer())
 		print "222222"
 	    	saver.restore(sess, 'frontBack125.ckpt')
+		ledCount = 0
 		
 		while True:
 			#step1 sleep
 			print "step1"
-			#time.sleep(0.3)
-	#		distance = getDistance()
-	#		if distance > 15:
-	#			continue
+			time.sleep(0.01)
+			if ledCount == 0:
+				colorWipe(strip, Color(0, 0, 255)) 
+				ledCount += 1
 	
 			#step2 get gyro&aceel sensor value 
 			print "step2"
@@ -233,7 +223,50 @@ try:
 			accel_xout_scaled = accel_xout / 16384.0
 			accel_yout_scaled = accel_yout / 16384.0
 			accel_zout_scaled = accel_zout / 16384.0
-	
+
+			time_count +=1
+			if(time_count%30)==1:
+				mqttc.loop_start()
+
+				sendMsg = str(gyro_xout)+'*'+str(gyro_yout)+'*'+str(gyro_yout)
+				print sendMsg
+				mqttc.publish("gyroSensor1",sendMsg)	
+				mystr = serialPort.readline()
+				mqttc.publish("gyroSensor1",sendMsg)	
+
+				msg = parseGPS(mystr)
+				if msg :
+					if msg.lat and msg.lon :
+						#step7 publis gps value 
+						print "step7"
+
+						print msg.lon+'----------'+msg.lat
+						b = float(msg.lat)/100
+						c = float(msg.lon)/100
+						msg.lat = "%f" % (b)
+						msg.lon = "%f" % (c)
+
+						positionLat = msg.lat.find('.')
+						positionLon = msg.lon.find('.')
+				
+						latDegree = int(msg.lat[:positionLat])
+						lonDegree = int(msg.lon[:positionLon])
+						latMinute = float(msg.lat[positionLat:])/60*100
+						lonMinute = float(msg.lon[positionLon:])/60*100
+									
+						latMerge = latDegree + latMinute
+						msg.lat = "%f" % (latMerge)
+						lonMerge = lonDegree + lonMinute
+						msg.lon = "%f" % (lonMerge)
+		
+						#step8 publis gps value 
+						print "step8"
+						mqttc.loop_start()
+						sendMsg = (msg.lat)+'*'+str(msg.lon)
+						print sendMsg
+						mqttc.publish("gpsLocation1",sendMsg)	
+						mqttc.loop_stop()						
+							
 			#skip first step	
 			if count == 0:
 				gyro_xout_prev = gyro_xout
@@ -251,9 +284,12 @@ try:
 				continue
 	
 			#step3 check if value is validate
-			x_data2 = [[0.7,0.7,0.7,0.7,0.7,0.9]]
+			x_data2 = [[0.7,0.7,0.7,0.7,0.7,0.9,0.7]]
 			y_data2 = [[0]]
-
+			if msg:
+				if msg.lat and msg.lon :
+					if(msg.lat==37.11211 and msg.lon == 126.111):
+						x_data2[0][6] = 0.0
 			x_data2[0][0] = (gyro_xout +32768) / 82770.
 			x_data2[0][1] = (gyro_yout +32768) / 82770.
 			x_data2[0][2] = (gyro_zout +32768) / 82771.
@@ -282,12 +318,13 @@ try:
 			print(h[0][0])
 			global T
 			T = 1
-		  #  if(c[0][0]==0.0):
-		#	print("test !!!")
-		#    print("\nHypothesis: ", h, "\nCorrect: ", c, "\nAccuracy: ", a)
-	#	tf.reset_default_graph()
+			now = time.localtime()
+			print((now.tm_hour+1))
+			if(now.tm_hour>=20):
+                                		h[0][0]-=0.1
+			print (h[0][0])
 			print "55555555"
-			if c[0][0]!=0.0 :
+			if h[0][0]>=0.5 :
 				continue
 
 	
@@ -310,7 +347,8 @@ try:
 			#step4 wait unitle gap between two variables is small enough
 				print "step44"
 				time.sleep(0.1)
-		
+				
+				colorWipe(strip, Color(255, 117, 0)) 
 				gyro_xout2 = read_word_2c(0x43)
 				gyro_yout2 = read_word_2c(0x45)
 				gyro_zout2 = read_word_2c(0x47)
@@ -334,7 +372,7 @@ try:
 		
 				print sendMsg
 				mqttc.publish("gyroSensor",sendMsg)	
-				if (vector < 5000) and (abs(x_rotation) > 60) or (abs(y_rotation) > 60) : 
+				if (vector < 10000) and (abs(x_rotation) > 45) or (abs(y_rotation) > 45) : 
 					waitCount += 1
 					print "waitcountDown ", waitCount
 				else :
@@ -349,6 +387,7 @@ try:
 					testa = 1	
 					#step6 get gps value
 					print "step6"
+					colorWipe(strip, Color(255, 0, 0))
 					countGps = 0
 					while True:
 						time.sleep(0.1)
@@ -362,7 +401,7 @@ try:
 							if msg.lat and msg.lon :
 								#step7 publis gps value 
 								print "step7"
-		
+								
 								print msg.lon+'----------'+msg.lat
 								b = float(msg.lat)/100
 								c = float(msg.lon)/100
@@ -426,7 +465,7 @@ try:
 			accel_zout_scaled_prev = accel_zout_prev / 16384.0
 		
 except KeyboardInterrupt as e:
-	gpio.cleanup()
+	colorWipe(strip, Color(0, 0, 0),50) 
 	mqtts.loob_stop
 	mqtts.unsubscribe("test/userID_1")
-	mqtts.disconnect() 
+	mqtts.disconnect()
