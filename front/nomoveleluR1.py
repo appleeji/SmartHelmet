@@ -11,7 +11,7 @@ learning_rate = 0.1
 #dataNoAccident
 
 
-infile = open("leftright.txt","r")
+infile = open("frontBack.txt","r")
 
 s = infile.read()
 numbers = re.split("['\n' ]",s)
@@ -29,7 +29,7 @@ leng2 = int(leng2*0.125)
 
 leng3 = len(numbers)/6
 leng3 = int(leng3*0.3)
-leng2 = 3000
+leng3 = 3000
 
 leng4 = len(numbers2)/6
 leng4 = int(leng4*0.3)
@@ -38,7 +38,7 @@ leng4 = 3000
 
 #leng = 2
 x_data = [[0.5 for col in range(7)] for row in range(leng+leng2)]
-x_data2 = [[0.5 for col in range(7)] for row in range(leng3+leng4)]
+x_data2 = [[0.5 for col in range(7)] for row in range(leng3)]
 x_data3 = [[0.5 for col in range(7)] for row in range(leng2+leng4)]
 x_data4 = [[0.5 for col in range(7)] for row in range(leng+leng3)]
 size = 0
@@ -48,29 +48,39 @@ for i in range((leng)*6):
         x_data[size][i%6]=float(numbers[i])
         if i % 6 == 5 :
                 if i>leng*3 :
-                        x_data[size][6]=0.5
+                        x_data[size][6]=0.7
                 size=size+1
 newSize = size
 for i in range(leng2*6):
         x_data[size][i%6]=float(numbers2[i])
         if i % 6 == 5 :
                 if i>leng2*3 :
-                        x_data[size][6]=0.5
+                        x_data[size][6]=0.7
                 size=size+1
 size=0
 for i in range(39000,56999):
         x_data2[size][i%6]=float(numbers[i])
         if i % 6 == 5 :
-                if i>47500 :
+                size=size+1
+                
+'''
+for i in range(39000,56999):
+        x_data2[size][i%6]=float(numbers[i])
+        if i % 6 == 5 :
+                if i>=49000 :
                         x_data2[size][6]=0.5
                 size=size+1
+'''
+                                
+'''
 for i in range(3000,20999):
         x_data2[size][i%6]=float(numbers2[i])
         if i % 6 == 5 :
-                if i>12000 :
+                if i>=12000 :
                         x_data2[size][6]=0.5
                 size=size+1
 size = 0
+'''
 '''
 for i in range(0,(leng2*6+leng4*6)):
         x_data3[size][i%6]=float(numbers2[i])
@@ -83,11 +93,9 @@ for i in range(leng*6+leng3*6):
                 size=size+1
 '''
 y_data = [[1 for col in range(1)] for row in range(leng)]
-y_data2 = [[0 for col in range(1)] for row in range(leng2)]
-y_data = y_data + y_data2
+y_data3 = [[0 for col in range(1)] for row in range(leng2)]
+y_data = y_data + y_data3
 t_data = [[1 for col in range(1)] for row in range(leng3)]
-t_data2 =  [[0 for col in range(1)] for row in range(leng4)]
-t_data = t_data + t_data2
 '''
 t2_data = [[0 for col in range(1)] for row in range(leng2+leng4)]
 t3_data = [[1 for col in range(1)] for row in range(leng+leng3)]
@@ -118,7 +126,7 @@ for i in range(9):
 x_data = np.array(x_data, dtype=np.float32)
 y_data = np.array(y_data, dtype=np.float32)
 x_data2 = np.array(x_data2, dtype=np.float32)
-y_data2 = np.array(y_data2, dtype=np.float32)
+#y_data2 = np.array(y_data2, dtype=np.float32)
 t_data = np.array(t_data, dtype=np.float32)
 '''
 x_data3 = np.array(x_data3, dtype=np.float32)
@@ -136,7 +144,7 @@ for i in range(leng+leng2):
 x_data_min2 = x_data2.min(axis=0)
 x_data_max2 = x_data2.max(axis=0)
 x_data_leng2 = abs(x_data_max2-x_data_min2)
-for i in range(leng3+leng4):
+for i in range(leng3):
         for j in range(6):
                 x_data2[i][j] = (x_data2[i][j] - x_data_min2[j])/x_data_leng2[j]
 '''
@@ -207,7 +215,7 @@ with tf.Session() as sess:
     
     for step in range(10001):
        sess.run(train, feed_dict={X: x_data, Y: y_data})
-    saver.save(sess, 'leftL.ckpt')
+    saver.save(sess, 'locationTest.ckpt')
     #saver.restore(sess, 'NoTest125.ckpt')
     # Accuracy report
     h, c, a = sess.run([hypothesis, predicted, accuracy],

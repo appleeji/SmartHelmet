@@ -1,0 +1,2 @@
+model_checkpoint_path: "leftL.ckpt"
+all_model_checkpoint_paths: "leftL.ckpt"

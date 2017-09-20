@@ -3,6 +3,7 @@ import tensorflow as tf
 import numpy as np
 import math
 import re
+import random
 
 tf.set_random_seed(777)  # for reproducibility
 learning_rate = 0.1
@@ -25,12 +26,8 @@ leng = int(leng*0.7)
 
 leng2 = len(numbers2)/6
 leng2 = int(leng2*0.7)
-<<<<<<< HEAD
-leng2 = int(leng2)
-=======
-s_leng2 = int(leng2)
-leng2 = int(leng2*0.125)
->>>>>>> 8fe431e388720f4115eaab4973df32903542be82
+#s_leng2 = int(leng2)
+leng2 = int(leng2/16)
 
 leng3 = len(numbers)/6
 leng3 = int(leng3*0.3)
@@ -38,6 +35,8 @@ leng3 = int(leng3*0.3)
 leng4 = len(numbers2)/6
 leng4 = int(leng4*0.3)
 leng4 = int(leng4)
+
+
 #leng = 2
 x_data = [[0 for col in range(6)] for row in range(leng+leng2)]
 x_data2 = [[0 for col in range(6)] for row in range(leng3+leng4)]
@@ -52,7 +51,7 @@ for i in range((leng)*6):
                 size=size+1
 newSize = size
 for i in range(leng2*6):
-        x_data[size][i%6]=float(numbers2[i])
+        x_data[size][i%6]=float(random.choice(numbers2))
         if i % 6 == 5 :
                 size=size+1
 size=0
@@ -60,7 +59,7 @@ for i in range((leng*6),(leng*6+leng3*6)):
         x_data2[size][i%6]=float(numbers[i])
         if i % 6 == 5 :
                 size=size+1
-for i in range((s_leng2*6),(s_leng2*6+leng4*6)):
+for i in range((leng2*6),(leng2*6+leng4*6)):
         x_data2[size][i%6]=float(numbers2[i])
         if i % 6 == 5 :
                 size=size+1
@@ -186,14 +185,11 @@ with tf.Session() as sess:
     # Initialize TensorFlow variables
     sess.run(tf.global_variables_initializer())
     
-    #for step in range(10001):
-<<<<<<< HEAD
-       #sess.run(train, feed_dict={X: x_data, Y: y_data})
-=======
-    #   sess.run(train, feed_dict={X: x_data, Y: y_data})
->>>>>>> 8fe431e388720f4115eaab4973df32903542be82
-    #saver.save(sess, 'frontBack25.ckpt')
-    saver.restore(sess, 'NoTest125.ckpt')
+    for step in range(10001):
+        sess.run(train, feed_dict={X: x_data, Y: y_data})
+
+    saver.save(sess, 'noMove125.ckpt')
+    #saver.restore(sess, 'NoTest125.ckpt')
     # Accuracy report
     h, c, a = sess.run([hypothesis, predicted, accuracy],
                        feed_dict={X: x_data2, Y: t_data})

@@ -37,38 +37,30 @@ leng4 = int(leng4)
 leng4 = 3000
 
 #leng = 2
-x_data = [[0.5 for col in range(7)] for row in range(leng+leng2)]
-x_data2 = [[0.5 for col in range(7)] for row in range(leng3+leng4)]
-x_data3 = [[0.5 for col in range(7)] for row in range(leng2+leng4)]
-x_data4 = [[0.5 for col in range(7)] for row in range(leng+leng3)]
+x_data = [[0 for col in range(6)] for row in range(leng+leng2)]
+x_data2 = [[0 for col in range(6)] for row in range(leng3+leng4)]
+x_data3 = [[0 for col in range(6)] for row in range(leng2+leng4)]
+x_data4 = [[0 for col in range(6)] for row in range(leng+leng3)]
 size = 0
 print(len(numbers)," " ,len(numbers2))
 print(leng," ",leng2," ",leng3," ",leng4)
 for i in range((leng)*6):
         x_data[size][i%6]=float(numbers[i])
         if i % 6 == 5 :
-                if i>leng*3 :
-                        x_data[size][6]=0.5
                 size=size+1
 newSize = size
 for i in range(leng2*6):
         x_data[size][i%6]=float(numbers2[i])
         if i % 6 == 5 :
-                if i>leng2*3 :
-                        x_data[size][6]=0.5
                 size=size+1
 size=0
 for i in range(39000,56999):
         x_data2[size][i%6]=float(numbers[i])
         if i % 6 == 5 :
-                if i>47500 :
-                        x_data2[size][6]=0.5
                 size=size+1
 for i in range(3000,20999):
         x_data2[size][i%6]=float(numbers2[i])
         if i % 6 == 5 :
-                if i>12000 :
-                        x_data2[size][6]=0.5
                 size=size+1
 size = 0
 '''
@@ -91,7 +83,8 @@ t_data = t_data + t_data2
 '''
 t2_data = [[0 for col in range(1)] for row in range(leng2+leng4)]
 t3_data = [[1 for col in range(1)] for row in range(leng+leng3)]
-print(len(x_data4),"  ",len(t3_data))'''
+print(len(x_data4),"  ",len(t3_data))
+'''
 '''
 x_data_mean = []
 temp = 0
@@ -120,40 +113,30 @@ y_data = np.array(y_data, dtype=np.float32)
 x_data2 = np.array(x_data2, dtype=np.float32)
 y_data2 = np.array(y_data2, dtype=np.float32)
 t_data = np.array(t_data, dtype=np.float32)
-'''
 x_data3 = np.array(x_data3, dtype=np.float32)
 t2_data = np.array(t2_data, dtype = np.float32)
 x_data4 = np.array(x_data4, dtype=np.float32)
-t3_data = np.array(t3_data, dtype = np.float32)'''
+t3_data = np.array(t3_data, dtype = np.float32)
 
 x_data_min = x_data.min(axis=0)
 x_data_max = x_data.max(axis=0)
 x_data_leng = abs(x_data_max-x_data_min)
-for i in range(leng+leng2):
-        for j in range(6):
-                x_data[i][j] = (x_data[i][j] - x_data_min[j])/x_data_leng[j]
+x_data = (x_data - x_data_min)/x_data_leng
 
 x_data_min2 = x_data2.min(axis=0)
 x_data_max2 = x_data2.max(axis=0)
 x_data_leng2 = abs(x_data_max2-x_data_min2)
-for i in range(leng3+leng4):
-        for j in range(6):
-                x_data2[i][j] = (x_data2[i][j] - x_data_min2[j])/x_data_leng2[j]
+x_data2 = (x_data2 - x_data_min)/x_data_leng
 '''
 x_data_min3 = x_data3.min(axis=0)
 x_data_max3 = x_data3.max(axis=0)
 x_data_leng3 = abs(x_data_max3-x_data_min3)
-for i in range(leng2+leng4):
-        for j in range(6):
-                x_data3[i][j] = (x_data3[i][j] - x_data_min3[j])/x_data_leng3[j]
+x_data3 = (x_data3 - x_data_min)/x_data_leng
 
 x_data_min4 = x_data4.min(axis=0)
 x_data_max4 = x_data4.max(axis=0)
 x_data_leng4 = abs(x_data_max4-x_data_min4)
-for i in range(leng+leng3):
-        for j in range(6):
-                x_data4[i][j] = (x_data4[i][j] - x_data_min4[j])/x_data_leng4[j]'''
-                
+x_data4 = (x_data4 - x_data_min)/x_data_leng'''
 print(x_data_min)
 print(x_data_leng)
 
@@ -162,7 +145,7 @@ print (y_data)
 
 X = tf.placeholder(tf.float32)
 Y = tf.placeholder(tf.float32)
-W1 = tf.Variable(tf.random_normal([7, 4]), name='weight1')
+W1 = tf.Variable(tf.random_normal([6, 4]), name='weight1')
 b1 = tf.Variable(tf.random_normal([4]), name='bias1')
 layer1 = tf.nn.relu(tf.matmul(X,W1)+b1)
 
@@ -207,7 +190,7 @@ with tf.Session() as sess:
     
     for step in range(10001):
        sess.run(train, feed_dict={X: x_data, Y: y_data})
-    saver.save(sess, 'leftL.ckpt')
+    saver.save(sess, 'leftRT.ckpt')
     #saver.restore(sess, 'NoTest125.ckpt')
     # Accuracy report
     h, c, a = sess.run([hypothesis, predicted, accuracy],
