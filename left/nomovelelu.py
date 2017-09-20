@@ -3,6 +3,7 @@ import tensorflow as tf
 import numpy as np
 import math
 import re
+import random
 
 tf.set_random_seed(777)  # for reproducibility
 learning_rate = 0.1
@@ -25,11 +26,11 @@ leng = int(leng*0.7)
 
 leng2 = len(numbers2)/6
 leng2 = int(leng2*0.7)
-leng2 = int(leng2*0.125)
+leng2 = int(leng2/12)
 
 leng3 = len(numbers)/6
 leng3 = int(leng3*0.3)
-leng2 = 3000
+leng3 = 3000
 
 leng4 = len(numbers2)/6
 leng4 = int(leng4*0.3)
@@ -48,6 +49,7 @@ for i in range((leng)*6):
         x_data[size][i%6]=float(numbers[i])
         if i % 6 == 5 :
                 size=size+1
+
 newSize = size
 for i in range(leng2*6):
         x_data[size][i%6]=float(numbers2[i])
@@ -188,7 +190,7 @@ with tf.Session() as sess:
     
     for step in range(10001):
        sess.run(train, feed_dict={X: x_data, Y: y_data})
-    #saver.save(sess, 'frontBack25.ckpt')
+    saver.save(sess, 'leftRight125.ckpt')
     #saver.restore(sess, 'NoTest125.ckpt')
     # Accuracy report
     h, c, a = sess.run([hypothesis, predicted, accuracy],

@@ -29,7 +29,7 @@ leng2 = int(leng2*0.125)
 
 leng3 = len(numbers)/6
 leng3 = int(leng3*0.3)
-leng2 = 3000
+leng3 = 3000
 
 leng4 = len(numbers2)/6
 leng4 = int(leng4*0.3)
@@ -145,7 +145,7 @@ X = tf.placeholder(tf.float32)
 Y = tf.placeholder(tf.float32)
 W1 = tf.Variable(tf.random_normal([6, 4]), name='weight1')
 b1 = tf.Variable(tf.random_normal([4]), name='bias1')
-layer1 = tf.nn.relu(tf.matmul(X,W1)+b1)
+layer1 = tf.sigmoid(tf.matmul(X,W1)+b1)
 
 W2 = tf.Variable(tf.random_normal([4, 2]), name='weight2')
 b2 = tf.Variable(tf.random_normal([2]), name='bias2')
@@ -188,7 +188,7 @@ with tf.Session() as sess:
     
     for step in range(10001):
        sess.run(train, feed_dict={X: x_data, Y: y_data})
-    #saver.save(sess, 'frontBack25.ckpt')
+    saver.save(sess, 'noMovelelu1sig1S.ckpt')
     #saver.restore(sess, 'NoTest125.ckpt')
     # Accuracy report
     h, c, a = sess.run([hypothesis, predicted, accuracy],
