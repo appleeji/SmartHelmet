@@ -15,6 +15,9 @@ import time
 import serial
 import pynmea2
 
+#led 
+import time
+from neopixel import *
 #------------------------------------------------ gps -----------------------------------------
 def parseGPS(mystr):
 	if mystr.find('GGA') > 0:
