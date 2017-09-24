@@ -284,7 +284,7 @@ try:
 				continue
 	
 			#step3 check if value is validate
-			x_data2 = [[0.7,0.7,0.7,0.7,0.7,0.9,0.63]]
+			x_data2 = [[0.7,0.7,0.7,0.7,0.7,0.9,0.60]]
 			y_data2 = [[0]]
 			if msg :
 				if msg.lat and msg.lon :
