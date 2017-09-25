@@ -22,7 +22,7 @@ from neopixel import *
 
 #------------------------------------------------ led -----------------------------------------#\
 # LED strip configuration:
-LED_COUNT      = 27      # Number of LED pixels.
+LED_COUNT      = 10      # Number of LED pixels.
 LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
 #LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
@@ -93,6 +93,6 @@ def theaterChaseRainbow(strip, wait_ms=50):
 strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
 	# Intialize the library (must be called once before other functions).
 strip.begin()
-colorWipe(strip, Color(255, 0, 0))
+colorWipe(strip, Color(255, 50, 0))
 
 

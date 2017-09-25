@@ -216,10 +216,10 @@ with tf.Session() as sess:
     # Initialize TensorFlow variables
     sess.run(tf.global_variables_initializer())
     
-    for step in range(10001):
-       sess.run(train, feed_dict={X: x_data, Y: y_data})
-    saver.save(sess, 'locationTest.ckpt')
-    #saver.restore(sess, 'locationTest.ckpt')
+  #  for step in range(10001):
+  #     sess.run(train, feed_dict={X: x_data, Y: y_data})
+  #  saver.save(sess, 'locationTest.ckpt')
+    saver.restore(sess, 'locationTest.ckpt')
     # Accuracy report
     h, c, a = sess.run([hypothesis, predicted, accuracy],
                        feed_dict={X: x_data2, Y: t_data})

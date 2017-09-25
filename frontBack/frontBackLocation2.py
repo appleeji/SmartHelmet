@@ -38,7 +38,7 @@ leng4 = 3000
 
 #leng = 2
 x_data = [[0.5 for col in range(7)] for row in range(leng+leng2)]
-x_data2 = [[0.70 for col in range(7)] for row in range(leng3)]
+x_data2 = [[0.50 for col in range(7)] for row in range(leng3)]
 x_data3 = [[0.5 for col in range(7)] for row in range(leng2+leng4)]
 x_data4 = [[0.5 for col in range(7)] for row in range(leng+leng3)]
 size = 0
@@ -48,14 +48,14 @@ for i in range((leng)*6):
         x_data[size][i%6]=float(numbers[i])
         if i % 6 == 5 :
                 if i>leng*5 :
-                        x_data[size][6]=1
+                        x_data[size][6]=0.5
                 size=size+1
 newSize = size
 for i in range(leng2*6):
         x_data[size][i%6]=float(numbers2[i])
         if i % 6 == 5 :
                 if i>leng2*3 :
-                        x_data[size][6]=1
+                        x_data[size][6]=0.5
                 size=size+1
 size=0
 for i in range(39000,56999):

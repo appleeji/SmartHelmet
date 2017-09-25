@@ -191,7 +191,7 @@ try:
 	with tf.Session() as sess:
 		sess.run(tf.global_variables_initializer())
 		print "222222"
-	    	saver.restore(sess, 'noMove125.ckpt')
+	    	saver.restore(sess, 'frontBack125.ckpt')
 		ledCount = 0
 		
 		while True:
@@ -284,11 +284,12 @@ try:
 				continue
 	
 			#step3 check if value is validate
-			x_data2 = [[0.7,0.7,0.7,0.7,0.7,0.9,0.0]]
+			x_data2 = [[0.7,0.7,0.7,0.7,0.7,0.9,0.5]]
 			y_data2 = [[0]]
-			if msg.lat and msg.lon :
-				if(msg.lat==37.11211 and msg.lon == 126.111)
-					x_data2[0][6] = 0.0
+			if msg:
+				if msg.lat and msg.lon :
+					if(msg.lat==37.11211 and msg.lon == 126.111):
+						x_data2[0][6] = 0.0
 			x_data2[0][0] = (gyro_xout +32768) / 82770.
 			x_data2[0][1] = (gyro_yout +32768) / 82770.
 			x_data2[0][2] = (gyro_zout +32768) / 82771.
@@ -380,6 +381,7 @@ try:
 					waitCount = 0
 				#count 30seconds		
 				if skipCount > 300 :
+					ledCount = 0
 					break	
 				#count 10secons
 				if waitCount > 100 :
