@@ -1,7 +1,0 @@
-<<<<<<< HEAD
-model_checkpoint_path: "leftRight125.ckpt"
-all_model_checkpoint_paths: "leftRight125.ckpt"
-=======
-model_checkpoint_path: "leftL.ckpt"
-all_model_checkpoint_paths: "leftL.ckpt"
->>>>>>> f9ddaa3301e8db434b44a98d4bdce1ff6b4b9305
