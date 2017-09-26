@@ -125,18 +125,19 @@ bus.write_byte_data(address, power_mgmt_1, 0)
 learning_rate = 0.1
 X = tf.placeholder(tf.float32)
 Y = tf.placeholder(tf.float32)
-W1 = tf.Variable(tf.random_normal([6, 4]), name='weight1')
-b1 = tf.Variable(tf.random_normal([4]), name='bias1')
+W1 = tf.Variable(tf.random_normal([6, 5]), name='weight1')
+b1 = tf.Variable(tf.random_normal([5]), name='bias1')
 layer1 = tf.nn.relu(tf.matmul(X,W1)+b1)
 
-W2 = tf.Variable(tf.random_normal([4, 2]), name='weight2')
-b2 = tf.Variable(tf.random_normal([2]), name='bias2')
+W2 = tf.Variable(tf.random_normal([5, 4]), name='weight2')
+b2 = tf.Variable(tf.random_normal([4]), name='bias2')
 layer2 = tf.nn.relu(tf.matmul(layer1,W2)+b2)
-'''
-W3 = tf.Variable(tf.random_normal([6, 4]), name='weight3')
-b3 = tf.Variable(tf.random_normal([4]), name='bias3')
+
+W3 = tf.Variable(tf.random_normal([4, 2]), name='weight3')
+b3 = tf.Variable(tf.random_normal([2]), name='bias3')
 layer3 = tf.nn.relu(tf.matmul(layer2,W3)+b3)
 
+'''
 W4 = tf.Variable(tf.random_normal([3, 2]), name='weight5')
 b4 = tf.Variable(tf.random_normal([2]), name='bias5')
 layer4 = tf.nn.relu(tf.matmul(layer3,W4)+b4)
@@ -149,7 +150,7 @@ b5 = tf.Variable(tf.random_normal([1]), name='bias6')
 #b4 = tf.Variable(tf.random_normal([1]), name='bias2')
 			
 # Hypothesis using sigmoid: tf.div(1., 1. + tf.exp(tf.matmul(X, W)))
-hypothesis = tf.sigmoid(tf.matmul(layer2, W5) + b5)
+hypothesis = tf.sigmoid(tf.matmul(layer3, W5) + b5)
 # cost/loss function
 cost = -tf.reduce_mean(Y * tf.log(hypothesis) + (1 - Y) *
 				       tf.log(1 - hypothesis))
