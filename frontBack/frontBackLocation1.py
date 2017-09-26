@@ -25,8 +25,8 @@ leng = int(leng*0.7)
 
 leng2 = len(numbers2)/6
 leng2 = int(leng2*0.7)
-leng2 = int(leng2*0.125)
-#leng2 = int(leng2*0.130)
+#leng2 = int(leng2*0.125)
+leng2 = int(leng2*0.126)
 
 leng3 = len(numbers)/6
 leng3 = int(leng3*0.3)
@@ -93,8 +93,8 @@ for i in range(leng*6+leng3*6):
         if i % 6 == 5 :
                 size=size+1
 '''
-y_data = [[1 for col in range(1)] for row in range(leng-130)]
-y_data2 = [[0 for col in range(1)] for row in range(130)]
+y_data = [[1 for col in range(1)] for row in range(leng-100)]
+y_data2 = [[0 for col in range(1)] for row in range(100)]
 y_data = y_data+y_data2
 y_data3 = [[0 for col in range(1)] for row in range(leng2)]
 y_data = y_data + y_data3
@@ -219,7 +219,7 @@ with tf.Session() as sess:
     
     for step in range(10001):
        sess.run(train, feed_dict={X: x_data, Y: y_data})
-    saver.save(sess, 'frontback2.ckpt')
+    saver.save(sess, 'frontback.ckpt')
     #saver.restore(sess, 'locationTest.ckpt')
     # Accuracy report
     h, c, a = sess.run([hypothesis, predicted, accuracy],
